@@ -43,12 +43,17 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $validator = Validator::make($request->all(),[
+            "email" => "required|email|exists:users,email",
+            "password" => "required"
         ]);
-        
-        if(!Auth::attempt($credentials)){
+
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->messages(),
+                "message" => "Erreur du formulaire."
+            ]);
+        } else if(!Auth::attempt($request->only('email', 'password'))){
             return response()->json([
                 'message'=>'Identifiants incorrects',
                 'status'=>401
@@ -58,7 +63,9 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
                 'token'=>$token,
-                'type'=>"Bearer"
+                'type'=>"Bearer",
+                'status' => 200,
+                'message' => 'Connexion réussie',
             ])->cookie('jwt', $token);           
         }
     }

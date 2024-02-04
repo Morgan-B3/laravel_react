@@ -31,6 +31,19 @@ const NewUser = () => {
         })
     }
 
+    const login = async (e) => {
+        e.preventDefault();
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}login`, user,{headers:{"Content-Type" : "application/json"}});
+        if(res.data.status === 200){
+            message.success(res.data.message)
+            setErrors([]);
+            navigate('/');
+        } else if(res.data.status === 401) {
+            message.error(res.data.message);
+        } else {
+            setErrors(res.data.errors);
+        }
+    }
 
     const saveUser = async (e) => {
         e.preventDefault();
@@ -66,7 +79,7 @@ const NewUser = () => {
 
     return (
         <Layout>
-            <form onSubmit={(e)=>saveUser(e)}>
+            <form onSubmit={(e)=>login(e)}>
                 <div>
                     <label htmlFor='email'>Email :</label>
                     <input type='email' id='email' name='email' value={user.email} onChange={(e)=>handleInput(e)}/>

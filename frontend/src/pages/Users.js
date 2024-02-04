@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useLocation, useNavigate } from 'react-router';
 import { message } from 'antd';
+import Layout from '../components/Layout.js';
 
 const Users = () => {
 
@@ -30,13 +31,12 @@ const Users = () => {
     })
 
     return (
-        <div>
+        <Layout>
             <div>{users.length} utilisateurs</div>
-            <button onClick={()=>navigate('/nouvel-utilisateur')}>S'inscrire</button>
             <ul>
                 {usersList}
             </ul>
-        </div>
+        </Layout>
     )
 }
 

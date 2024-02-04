@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import {Modal, message} from "antd"
+import Layout from '../components/Layout.js';
 
 const UserDetail = () => {
     const {id} = useParams();
@@ -24,7 +25,6 @@ const UserDetail = () => {
         setNewPseudo(user.pseudo);
     },[user])
 
-    console.log(newPseudo);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
       setIsModalOpen(true);
@@ -56,19 +56,18 @@ const UserDetail = () => {
     }
 
     return (
-        <div>
-        <button onClick={()=>navigate('/')}>Accueil</button>
-        <div>{user.pseudo}</div>
-        <button onClick={()=>showModal()}>Modifier</button>
-        <Modal title="Modifier le nom :" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
-            <form onSubmit={(e)=>update(e)}>
-                <input type='text' id='newPseudo' name='newPseudo' value={newPseudo} onChange={(e)=>setNewPseudo(e.target.value)} required/>
-                <b>{errors.newPseudo}</b>
-                <button type='submit'>Valider</button>
-            </form>
-        </Modal>
-        <button onClick={(e)=>deleteUser(e)}>Supprimer</button>
-        </div>
+        <Layout>
+            <div>{user.pseudo}</div>
+            <button onClick={()=>showModal()}>Modifier</button>
+            <Modal title="Modifier le nom :" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
+                <form onSubmit={(e)=>update(e)}>
+                    <input type='text' id='newPseudo' name='newPseudo' value={newPseudo} onChange={(e)=>setNewPseudo(e.target.value)} required/>
+                    <b>{errors.newPseudo}</b>
+                    <button type='submit'>Valider</button>
+                </form>
+            </Modal>
+            <button onClick={(e)=>deleteUser(e)}>Supprimer</button>
+        </Layout>
     )
 }
 

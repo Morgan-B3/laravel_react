@@ -2,7 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import swal from 'sweetalert';
-import { message } from 'antd';
+import { message, Modal } from 'antd';
+import Layout from '../components/Layout.js';
 
 const NewUser = () => {
 
@@ -14,6 +15,14 @@ const NewUser = () => {
         password: '',
     });
     const [errors, setErrors] = useState([]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+      setIsModalOpen(true);
+    };
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
 
     const handleInput = (e) => {
         setUser({
@@ -56,21 +65,42 @@ const NewUser = () => {
     }
 
     return (
-        <div>
-            <button onClick={()=>navigate('/')}>Accueil</button>
+        <Layout>
             <form onSubmit={(e)=>saveUser(e)}>
-                <label htmlFor='pseudo'>Nom d'utilisateur :</label>
-                <input type='text' id='pseudo' name='pseudo' value={user.pseudo} onChange={(e)=>handleInput(e)}/>
-                <b>{errors.pseudo}</b>
-                <label htmlFor='email'>Email :</label>
-                <input type='email' id='email' name='email' value={user.email} onChange={(e)=>handleInput(e)}/>
-                <b>{errors.email}</b>
-                <label htmlFor='password'>Mot de passe :</label>
-                <input type='password' id='password' name='password' value={user.password} onChange={(e)=>handleInput(e)}/>
-                <b>{errors.password}</b>
+                <div>
+                    <label htmlFor='email'>Email :</label>
+                    <input type='email' id='email' name='email' value={user.email} onChange={(e)=>handleInput(e)}/>
+                    <b>{errors.email}</b>
+                </div>
+                <div>
+                    <label htmlFor='password'>Mot de passe :</label>
+                    <input type='password' id='password' name='password' value={user.password} onChange={(e)=>handleInput(e)}/>
+                    <b>{errors.password}</b>
+                </div>
                 <button type='submit' >Valider</button>
             </form>
-        </div>
+            <button onClick={()=>showModal()}>S'inscrire</button>
+            <Modal title="Inscription :" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
+                <form onSubmit={(e)=>saveUser(e)}>
+                    <div>
+                        <label htmlFor='pseudo'>Nom d'utilisateur :</label>
+                        <input type='text' id='pseudo' name='pseudo' value={user.pseudo} onChange={(e)=>handleInput(e)}/>
+                        <b>{errors.pseudo}</b>
+                    </div>
+                    <div>
+                        <label htmlFor='email'>Email :</label>
+                        <input type='email' id='email' name='email' value={user.email} onChange={(e)=>handleInput(e)}/>
+                        <b>{errors.email}</b>
+                    </div>
+                    <div>
+                        <label htmlFor='password'>Mot de passe :</label>
+                        <input type='password' id='password' name='password' value={user.password} onChange={(e)=>handleInput(e)}/>
+                        <b>{errors.password}</b>
+                    </div>
+                    <button type='submit' >Valider</button>
+                </form>
+            </Modal>
+        </Layout>
     )
 }
 

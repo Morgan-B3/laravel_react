@@ -50,6 +50,7 @@ const NewUser = () => {
             //     icon: "error",
             //     button: "OK"
             // })
+            message.error("Champ(s) invalide(s)")
             setErrors(res.data.errors);
         }
     }

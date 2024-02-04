@@ -7,16 +7,12 @@ const Users = () => {
 
     const navigate = useNavigate();
 
-    const messageData = useLocation().state;
     const [isLoading, setIsLoading] = useState(true);
     const [users, setUsers] = useState([]);
-    // const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(()=>{
         getUsers()
     }, [])
-
-   
 
     const getUsers = async()=>{
         await axios.get(`${process.env.REACT_APP_BACKEND_URL}users`).then(

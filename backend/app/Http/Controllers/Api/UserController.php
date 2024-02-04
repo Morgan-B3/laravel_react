@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -52,6 +54,18 @@ class UserController extends Controller
                 "message" => "L'utilisateur a été ajouté."
             ]);
         }
+    }
+
+    public function checkUser(Request $request, $id){
+        return response()->json([
+            'request'=>Auth::user()
+        ]);
+        // if($request->user_id == Auth::user()->id){
+        //     return response()->json([
+        //         'status' => 200,
+        //         "userAuthorized" => true
+        //     ]);
+        // }
     }
 
     public function update(Request $request, $id){

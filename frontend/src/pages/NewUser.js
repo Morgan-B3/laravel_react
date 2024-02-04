@@ -36,6 +36,7 @@ const NewUser = () => {
         const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}login`, user,{headers:{"Content-Type" : "application/json"}});
         if(res.data.status === 200){
             message.success(res.data.message)
+            localStorage.setItem("user_token", res.data.token);
             setErrors([]);
             navigate('/');
         } else if(res.data.status === 401) {

@@ -12,13 +12,24 @@ const UserDetail = () => {
     const [user, setUser] = useState({});
     const [newPseudo, setNewPseudo] = useState("");
     const [errors, setErrors] = useState([]);
+    const [userAuthorized, setUserAuthorized] = useState(false);
     
     const getUser = async()=>{
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}user/${id}`).then(res=> res.data.user);
         setUser(response);
     };
+
+    const checkUser = async()=>{
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}user/${id}/check`);
+        console.log(res.data.request);
+        // if(res.data.status === 200){
+        //     setUserAuthorized(res.data.userAuthorized);
+        // }
+    }
+
     useEffect(()=>{
         getUser();
+        checkUser();
     },[])
 
     useEffect(()=>{
@@ -35,7 +46,7 @@ const UserDetail = () => {
     
     const update = async (e)=>{
         e.preventDefault();
-        const res = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}user/${id}/update`);
+        const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}user/${id}/update`, {newPseudo});
 
         if(res.data.status === 200){
             setNewPseudo("");
@@ -58,15 +69,19 @@ const UserDetail = () => {
     return (
         <Layout>
             <div>{user.pseudo}</div>
-            <button onClick={()=>showModal()}>Modifier</button>
-            <Modal title="Modifier le nom :" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
-                <form onSubmit={(e)=>update(e)}>
-                    <input type='text' id='newPseudo' name='newPseudo' value={newPseudo} onChange={(e)=>setNewPseudo(e.target.value)} required/>
-                    <b>{errors.newPseudo}</b>
-                    <button type='submit'>Valider</button>
-                </form>
-            </Modal>
-            <button onClick={(e)=>deleteUser(e)}>Supprimer</button>
+            {userAuthorized ?
+                <div>
+                    <button onClick={()=>showModal()}>Modifier</button>
+                    <Modal title="Modifier le nom :" open={isModalOpen} onCancel={handleCancel} footer={null} centered >
+                        <form onSubmit={(e)=>update(e)}>
+                            <input type='text' id='newPseudo' name='newPseudo' value={newPseudo} onChange={(e)=>setNewPseudo(e.target.value)} required/>
+                            <b>{errors.newPseudo}</b>
+                            <button type='submit'>Valider</button>
+                        </form>
+                    </Modal>
+                    <button onClick={(e)=>deleteUser(e)}>Supprimer</button>
+                </div>
+            : ""}
         </Layout>
     )
 }

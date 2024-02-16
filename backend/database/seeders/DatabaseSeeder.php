@@ -21,9 +21,7 @@ class DatabaseSeeder extends Seeder
             $file = pathinfo($filesInFolder[$i]);
             Image::create(['url'=>$file['basename']]);
             
-        }
-                    
-           
+        }           
     } 
 
     // \App\Models\User::factory()->create([

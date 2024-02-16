@@ -10,13 +10,16 @@ const UserDetail = () => {
     const navigate = useNavigate();
 
     const [user, setUser] = useState({});
+    const [image, setImage] = useState("");
     const [newPseudo, setNewPseudo] = useState("");
     const [errors, setErrors] = useState([]);
     const [userAuthorized, setUserAuthorized] = useState(false);
     
     const getUser = async()=>{
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}user/${id}`).then(res=> res.data.user);
-        setUser(response);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}user/${id}/image`);
+        setUser(response.data.user);
+        setImage(`http://localhost:8000/images/${response.data.image.url}`);
+        console.log(response.data.image.url);
     };
 
     const checkUser = async()=>{
@@ -69,6 +72,7 @@ const UserDetail = () => {
     return (
         <Layout>
             <div>{user.pseudo}</div>
+            <img src={image}/>
             {userAuthorized ?
                 <div>
                     <button onClick={()=>showModal()}>Modifier</button>

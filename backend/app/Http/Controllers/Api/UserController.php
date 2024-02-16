@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,16 @@ class UserController extends Controller
             'user'=> $user,
             "status"=> 200,
         ]) ;
+    }
+
+    public function userImage($id){
+        $user = User::findOrFail($id);
+        $image = Image::where('id', $user->image_id)->first();
+        return response()->json([
+            "user"=>$user,
+            "image"=>$image,
+            "status"=>200,
+        ]);
     }
 
 

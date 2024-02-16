@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
